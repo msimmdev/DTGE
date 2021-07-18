@@ -42,10 +42,10 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             tile.Setup(v => v.Equals(tile.Object)).Returns(true);
 
             sut.Tiles.Add(tile.Object);
-            var getVertex = sut.Tiles.First();
+            var getTile = sut.Tiles.First();
 
             Assert.Single(sut.Tiles);
-            Assert.Equal(tile.Object, getVertex);
+            Assert.Equal(tile.Object, getTile);
         }
 
         [Fact]
