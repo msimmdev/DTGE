@@ -42,7 +42,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             var vertex = new Mock<IVertex<IBoardTile>>();
             vertex.Setup(v => v.Equals(vertex.Object)).Returns(true);
 
-            sut.AddVertex(vertex.Object);
+            sut.Vertices.Add(vertex.Object);
             var getVertex = sut.Vertices.First();
 
             Assert.Equal(vertex.Object, getVertex);
@@ -56,7 +56,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             vertex.Setup(v => v.Equals(vertex.Object)).Returns(true);
             vertex.SetupGet(v => v.Object).Returns(tile.Object);
 
-            sut.AddVertex(vertex.Object);
+            sut.Vertices.Add(vertex.Object);
             var getVertex = sut.FindVertex(tile.Object);
 
             Assert.Equal(vertex.Object, getVertex);
@@ -78,8 +78,8 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             var vertex = new Mock<IVertex<IBoardTile>>();
             vertex.Setup(v => v.Equals(vertex.Object)).Returns(true);
 
-            sut.AddVertex(vertex.Object);
-            sut.RemoveVertex(vertex.Object);
+            sut.Vertices.Add(vertex.Object);
+            sut.Vertices.Remove(vertex.Object);
             var vertices = sut.Vertices;
 
             Assert.Empty(vertices);
@@ -124,8 +124,8 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
 
             vertex2.SetupGet(v => v.Edges).Returns(edgeList2);
 
-            sut.AddVertex(vertex1.Object);
-            sut.AddVertex(vertex2.Object);
+            sut.Vertices.Add(vertex1.Object);
+            sut.Vertices.Add(vertex2.Object);
             var data = sut.GetSerializationData();
             var ObjectData = data as TileGraphSerializationData;
 

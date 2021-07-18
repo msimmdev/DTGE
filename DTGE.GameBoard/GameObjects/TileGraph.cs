@@ -15,39 +15,21 @@ namespace DTGE.GameBoard.GameObjects
         public TileGraph()
         {
             Id = Guid.NewGuid();
-            vertices = new List<IVertex<IBoardTile>>();
+            Vertices = new HashSet<IVertex<IBoardTile>>();
         }
 
-        private List<IVertex<IBoardTile>> vertices;
-        public IEnumerable<IVertex<IBoardTile>> Vertices { get { return vertices; } }
+        public ISet<IVertex<IBoardTile>> Vertices { get; }
         public Func<Guid, IBoardTile> ObjectResolver { get; set; }
-
-        public void AddVertex(IVertex<IBoardTile> vertex)
-        {
-            if (vertices.Any(x => x.Equals(vertex)))
-            {
-                throw new InvalidOperationException("Cannot add duplicate vertex.");
-            }
-            else
-            {
-                vertices.Add(vertex);
-            }
-        }
 
         public IVertex<IBoardTile> FindVertex(IBoardTile tile)
         {
-            return vertices.SingleOrDefault(x => x.Object.Equals(tile));
-        }
-
-        public void RemoveVertex(IVertex<IBoardTile> vertex)
-        {
-            vertices.Remove(vertex);
+            return Vertices.SingleOrDefault(x => x.Object.Equals(tile));
         }
 
         public IGameSerializationData GetSerializationData()
         {
             var vertexList = new List<VertexSerializationData>();
-            foreach (var vertex in vertices)
+            foreach (var vertex in Vertices)
             {
                 var edgeList = new List<EdgeSerializationData>();
                 foreach (var edge in vertex.Edges)
@@ -94,7 +76,7 @@ namespace DTGE.GameBoard.GameObjects
                     var edge = new Edge<IBoardTile>(vertexTracker[new Guid(edgeData.SourceObjectId)], vertexTracker[new Guid(edgeData.TargetObjectId)], edgeData.Distance);
                     vertex.AddEdge(edge);
                 }
-                vertices.Add(vertex);
+                Vertices.Add(vertex);
             }
         }
     }
