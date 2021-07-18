@@ -11,9 +11,8 @@ namespace DTGE.GameBoard.GameObjects
 {
     public class Board : DTGEObject, IBoard
     {
-        public Board()
+        public Board() : base()
         {
-            Id = Guid.NewGuid();
             Tiles = new Dictionary<Guid, IBoardTile>();
             Objects = new Dictionary<Guid, IBoardObject>();
         }

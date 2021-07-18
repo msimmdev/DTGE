@@ -10,11 +10,6 @@ namespace DTGE.GameBoard.GameObjects
 {
     public class BoardObject : DTGEObject, IBoardObject
     {
-        public BoardObject() 
-        {
-            Id = Guid.NewGuid();
-        }
-
         public IBoard Board { get; set; }
         public IBoardPosition Position { get; set; }
 

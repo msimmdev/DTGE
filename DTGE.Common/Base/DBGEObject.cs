@@ -5,6 +5,11 @@ namespace DTGE.Common.Base
 {
     public abstract class DTGEObject : IEquatable<DTGEObject>
     {
+        public DTGEObject()
+        {
+            Id = Guid.NewGuid();
+        }
+
         public Guid Id { get; set; }
 
         public override bool Equals(Object other)

@@ -12,9 +12,8 @@ namespace DTGE.GameBoard.GameObjects
 {
     public class TileGraph : DTGEObject, ITileGraph
     {
-        public TileGraph()
+        public TileGraph() : base()
         {
-            Id = Guid.NewGuid();
             Vertices = new HashSet<IVertex<IBoardTile>>();
         }
 
