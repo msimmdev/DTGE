@@ -45,6 +45,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             sut.Vertices.Add(vertex.Object);
             var getVertex = sut.Vertices.First();
 
+            Assert.Single(sut.Vertices);
             Assert.Equal(vertex.Object, getVertex);
         }
 
@@ -127,10 +128,17 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             sut.Vertices.Add(vertex1.Object);
             sut.Vertices.Add(vertex2.Object);
             var data = sut.GetSerializationData();
-            var ObjectData = data as TileGraphSerializationData;
+            var objectData = data as TileGraphSerializationData;
+            var vertexData = objectData.Vertices.First();
+            var edgeData = vertexData.Edges.First();
 
-            Assert.Equal(sut.Id.ToString(), ObjectData.Id);
-            Assert.Equal(2, ObjectData.Vertices.Count());
+            Assert.Equal(sut.Id.ToString(), objectData.Id);
+            Assert.Equal(2, objectData.Vertices.Count());
+            Assert.Equal(someGuid1.ToString(), vertexData.ObjectId);
+            Assert.Single(vertexData.Edges);
+            Assert.Equal(3, edgeData.Distance);
+            Assert.Equal(someGuid1.ToString(), edgeData.SourceObjectId);
+            Assert.Equal(someGuid2.ToString(), edgeData.TargetObjectId);
         }
 
         [Fact]
@@ -185,7 +193,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
 
             Assert.Equal(someGuid, id);
             Assert.Equal(2, vertices.Count());
-            Assert.Equal(tile1.Object, firstVertex.Object);
+            Assert.Same(tile1.Object, firstVertex.Object);
             Assert.Single(edges);
             Assert.Equal(4, firstEdge.Distance);
             Assert.Equal(tile1.Object, firstEdge.Source.Object);
