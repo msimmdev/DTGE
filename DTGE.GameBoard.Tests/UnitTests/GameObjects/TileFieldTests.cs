@@ -11,7 +11,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
 {
     public class TileFieldTests
     {
-        private TileField sut;
+        private readonly TileField sut;
         public TileFieldTests()
         {
             sut = new TileField();

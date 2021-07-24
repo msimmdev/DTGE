@@ -7,9 +7,8 @@ namespace DTGE.GameBoard.Interfaces.GameObjects
     /// <summary>
     /// An unordered set of tiles representing a field of tiles, can be used to represent possible pathing targets.
     /// </summary>
-    public interface ITileField : IGameSerializable
+    public interface ITileField : IIdentifiedObject
     {
-        Guid Id { get; set; }
         ISet<IBoardTile> Tiles { get; set; }
     }
 }

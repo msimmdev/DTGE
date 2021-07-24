@@ -10,7 +10,7 @@ namespace DTGE.GameBoard.GameObjects
     /// <summary>
     /// An unordered set of tiles.
     /// </summary>
-    public class TileField : DTGEObject, ITileField
+    public class TileField : IdentifiedObject, ITileField
     {
         public TileField() : base()
         {

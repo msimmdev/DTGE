@@ -7,7 +7,7 @@ using DTGE.GameBoard.SerializationData;
 
 namespace DTGE.GameBoard.GameObjects
 {
-    public class TilePath : DTGEObject, ITilePath
+    public class TilePath : IdentifiedObject, ITilePath
     {
         public TilePath() : base()
         {

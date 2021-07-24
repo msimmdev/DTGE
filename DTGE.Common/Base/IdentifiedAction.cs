@@ -2,7 +2,7 @@
 
 namespace DTGE.Common.Base
 {
-    public abstract class DTGEAction
+    public abstract class IdentifiedAction
     {
         public abstract void Execute();
     }

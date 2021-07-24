@@ -8,7 +8,7 @@ using DTGE.GameBoard.DataTypes;
 
 namespace DTGE.GameBoard.GameObjects
 {
-    public class BoardObject : DTGEObject, IBoardObject
+    public class BoardObject : IdentifiedObject, IBoardObject
     {
         public IBoard Board { get; set; }
         public IBoardPosition Position { get; set; }

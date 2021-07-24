@@ -10,7 +10,7 @@ using DTGE.GameBoard.DataTypes;
 
 namespace DTGE.GameBoard.GameObjects
 {
-    public class TileGraph : DTGEObject, ITileGraph
+    public class TileGraph : IdentifiedObject, ITileGraph
     {
         public TileGraph() : base()
         {

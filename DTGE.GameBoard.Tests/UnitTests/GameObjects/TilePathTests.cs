@@ -11,7 +11,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
 {
     public class TilePathTests
     {
-        private TilePath sut;
+        private readonly TilePath sut;
         public TilePathTests()
         {
             sut = new TilePath();

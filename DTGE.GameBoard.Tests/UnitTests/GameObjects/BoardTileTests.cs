@@ -11,7 +11,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
 {
     public class BoardTileTests
     {
-        private BoardTile sut;
+        private readonly BoardTile sut;
         public BoardTileTests()
         {
             sut = new BoardTile();

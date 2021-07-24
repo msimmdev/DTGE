@@ -7,12 +7,8 @@ namespace DTGE.GameBoard.Interfaces.GameObjects
     /// <summary>
     /// Representation of an object that can be placed onto a board at a position.
     /// </summary>
-    public interface IBoardObject : IPositionable, IGameSerializable
+    public interface IBoardObject : IPositionable, IIdentifiedObject
     {
-        /// <summary>
-        /// A unique ID for the object.
-        /// </summary>
-        Guid Id { get; set; }
         /// <summary>
         /// A reference to the board the object is placed upon.
         /// </summary>

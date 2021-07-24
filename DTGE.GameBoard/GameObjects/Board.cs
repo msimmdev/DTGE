@@ -9,7 +9,7 @@ using DTGE.GameBoard.SerializationData;
 
 namespace DTGE.GameBoard.GameObjects
 {
-    public class Board : DTGEObject, IBoard
+    public class Board : IdentifiedObject, IBoard
     {
         public Board() : base()
         {

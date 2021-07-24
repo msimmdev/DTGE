@@ -12,7 +12,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
 {
     public class TileGraphTests
     {
-        private TileGraph sut;
+        private readonly TileGraph sut;
         public TileGraphTests()
         {
             sut = new TileGraph();
@@ -23,8 +23,8 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
         {
             var id = sut.Id;
 
-            Assert.IsType<Guid>(sut.Id);
-            Assert.False(sut.Id == new Guid());
+            Assert.IsType<Guid>(id);
+            Assert.False(id == new Guid());
         }
 
         [Fact]

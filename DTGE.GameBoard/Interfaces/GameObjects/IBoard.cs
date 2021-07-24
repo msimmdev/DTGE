@@ -8,12 +8,8 @@ namespace DTGE.GameBoard.Interfaces.GameObjects
     /// <summary>
     /// Representation of a board.
     /// </summary>
-    public interface IBoard : IGameSerializable
+    public interface IBoard : IIdentifiedObject
     {
-        /// <summary>
-        ///  A unique ID for the board.
-        /// </summary>
-        Guid Id { get; set; }
         /// <summary>
         /// A lookup dictionary of the tiles that make up the board.
         /// </summary>
