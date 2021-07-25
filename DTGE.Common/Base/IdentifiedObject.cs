@@ -1,19 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using DTGE.Common.Core;
 using DTGE.Common.Interfaces;
 
 namespace DTGE.Common.Base
 {
     public abstract class IdentifiedObject : IEquatable<IdentifiedObject>
     {
-        public IdentifiedObject()
+        public IdentifiedObject() : this(new EmptyState())
+        {
+
+        }
+
+        public IdentifiedObject(IGameState state)
         {
             Id = Guid.NewGuid();
             Tags = new HashSet<string>();
+            State = state;
         }
 
         public Guid Id { get; set; }
         public ISet<string> Tags { get; set; }
+        public IGameState State { get; protected set; }
 
         public override bool Equals(Object other)
         {

@@ -1,6 +1,8 @@
-﻿namespace DTGE.Common.Interfaces
+﻿using System;
+
+namespace DTGE.Common.Interfaces
 {
-    public interface IGameState
+    public interface IGameState : IGameSerializable, IEquatable<IGameState>
     {
     }
 }

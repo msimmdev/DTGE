@@ -11,5 +11,6 @@ namespace DTGE.Common.Interfaces
         /// </summary>
         Guid Id { get; set; }
         ISet<string> Tags { get; set; }
+        IGameState State { get; }
     }
 }
