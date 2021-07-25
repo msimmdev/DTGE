@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Xunit;
 using Moq;
+using DTGE.Common.Core;
 using DTGE.GameBoard.Interfaces.DataTypes;
 using DTGE.GameBoard.Interfaces.GameObjects;
 using DTGE.GameBoard.GameObjects;
@@ -28,12 +29,35 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
         }
 
         [Fact]
+        public void Constructor_Empty_ShouldSetEmputTags()
+        {
+            Assert.Empty(sut.Tags);
+        }
+
+        [Fact]
+        public void Constructor_Empty_ShouldSetEmputState()
+        {
+            Assert.IsType<EmptyState>(sut.State);
+        }
+
+        [Fact]
         public void Constructor_Empty_ShouldSetEmptyVertices()
         {
             var vertices = sut.Vertices;
 
             Assert.NotNull(vertices);
             Assert.Empty(vertices);
+        }
+
+        [Fact]
+        public void Tags_CardAddAndGet_ShouldReturnSingleList()
+        {
+            var testString = "ONE";
+
+            sut.Tags.Add(testString);
+            var tag = sut.Tags.First();
+
+            Assert.Equal(testString, tag);
         }
 
         [Fact]
@@ -54,6 +78,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
         {
             var tile = new Mock<IBoardTile>();
             var vertex = new Mock<IVertex<IBoardTile>>();
+            tile.Setup(t => t.Equals(tile.Object)).Returns(true);
             vertex.Setup(v => v.Equals(vertex.Object)).Returns(true);
             vertex.SetupGet(v => v.Object).Returns(tile.Object);
 

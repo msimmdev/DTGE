@@ -1,6 +1,7 @@
 ﻿using System;
 using Xunit;
 using Moq;
+using DTGE.Common.Core;
 using DTGE.GameBoard.GameObjects;
 using DTGE.GameBoard.Interfaces.GameObjects;
 using DTGE.GameBoard.Interfaces.DataTypes;
@@ -20,8 +21,22 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
         [Fact]
         public void Constructor_Empty_ShouldSetNonEmptyGuidId()
         {
+            Assert.IsType<Guid>(sut.Id);
             Assert.False(sut.Id == new Guid());
         }
+
+        [Fact]
+        public void Constructor_Empty_ShouldSetEmputTags()
+        {
+            Assert.Empty(sut.Tags);
+        }
+
+        [Fact]
+        public void Constructor_Empty_ShouldSetEmputState()
+        {
+            Assert.IsType<EmptyState>(sut.State);
+        }
+
 
         [Fact]
         public void Board_GetAndSet_ShouldMatch()
