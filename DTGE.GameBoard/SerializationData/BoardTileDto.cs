@@ -4,10 +4,10 @@ using DTGE.Common.Interfaces;
 
 namespace DTGE.GameBoard.SerializationData
 {
-    public class BoardTileSerializationData : IGameSerializationData
+    public class BoardTileDto : IGameDto
     {
         public string Id { get; set; }
         public string BoardId { get; set; }
-        public IGameSerializationData Position { get; set; }
+        public BoardPositionDto Position { get; set; }
     }
 }

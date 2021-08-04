@@ -30,9 +30,9 @@ namespace DTGE.GameBoard.GameObjects
             return Tiles.Values.Any(t => t.Position.Equals(position));
         }
 
-        public IGameSerializationData GetSerializationData()
+        public IGameDto GetDto()
         {
-            return new BoardSerializationData()
+            return new BoardDto()
             {
                 Id = this.Id.ToString(),
                 BoardTileIds = this.Tiles.Keys.Select(g => g.ToString()).ToList(),
@@ -40,9 +40,9 @@ namespace DTGE.GameBoard.GameObjects
             };
         }
 
-        public void PopulateSerializationData(IGameSerializationData data)
+        public void UseDto(IGameDto data, IObjectResolver resolver)
         {
-            var dataObject = data as BoardSerializationData;
+            var dataObject = data as BoardDto;
             Id = new Guid(dataObject.Id);
         }
     }

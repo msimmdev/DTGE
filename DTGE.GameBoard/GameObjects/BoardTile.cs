@@ -13,28 +13,28 @@ namespace DTGE.GameBoard.GameObjects
         public IBoard Board { get; set; }
         public IBoardPosition Position { get; set; }
 
-        public IGameSerializationData GetSerializationData()
+        public IGameDto GetDto()
         {
-            return new BoardTileSerializationData()
+            return new BoardTileDto()
             {
                 Id = this.Id.ToString(),
                 BoardId = this.Board?.Id.ToString() ?? null,
-                Position = this.Position?.GetSerializationData() ?? null
+                Position = this.Position?.GetDto() as BoardPositionDto ?? null
             };
         }
 
-        public void PopulateSerializationData(IGameSerializationData data)
+        public void UseDto(IGameDto data, IObjectResolver resolver)
         {
-            var objectData = data as BoardTileSerializationData;
+            var objectData = data as BoardTileDto;
             Id = new Guid(objectData.Id);
 
             if (objectData.Position != null)
             {
                 var posType = objectData.Position.GetType();
-                if (posType == typeof(QuadBoardPositionSerializationData))
+                if (posType == typeof(BoardPositionDto))
                 {
-                    var posData = objectData.Position as QuadBoardPositionSerializationData;
-                    var newPos = new QuadBoardPosition(posData.X, posData.Y);
+                    var posData = objectData.Position as BoardPositionDto;
+                    var newPos = new QuadBoardPosition(posData);
                     Position = newPos;
                 }
             }

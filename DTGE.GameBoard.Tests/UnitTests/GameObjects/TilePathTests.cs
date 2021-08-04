@@ -81,7 +81,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
         }
 
         [Fact]
-        public void GetSerializationData_CompleteData_ShouldMatchData()
+        public void GetDto_CompleteData_ShouldMatchData()
         {
             var someGuid = Guid.NewGuid();
             var tile = new Mock<IBoardTile>();
@@ -90,8 +90,8 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             sut.Tiles.Add(tile.Object);
             sut.Distance = 6;
 
-            var data = sut.GetSerializationData();
-            var objectData = data as TilePathSerializationData;
+            var data = sut.GetDto();
+            var objectData = data as TilePathDto;
             var tileId = objectData.TileIds.First();
 
             Assert.Equal(sut.Id.ToString(), objectData.Id);
@@ -101,14 +101,14 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
         }
 
         [Fact]
-        public void PopulateSerializationData_CompleteData_ShouldMatchData()
+        public void UseDto_CompleteData_ShouldMatchData()
         {
             var someGuid = Guid.NewGuid();
             var otherGuid = Guid.NewGuid();
             var tile = new Mock<IBoardTile>();
             tile.SetupGet(t => t.Id).Returns(otherGuid);
             var tileIds = new List<string>() { otherGuid.ToString() };
-            var data = new TilePathSerializationData()
+            var data = new TilePathDto()
             {
                 Id = someGuid.ToString(),
                 TileIds = tileIds,
@@ -116,7 +116,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             };
 
             sut.ObjectResolver = i => { return tile.Object; };
-            sut.PopulateSerializationData(data);
+            sut.UseDto(data, null);
             var gotTile = sut.Tiles.First();
 
             Assert.Equal(someGuid, sut.Id);

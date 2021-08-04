@@ -21,7 +21,7 @@ namespace DTGE.Common.Base
 
         public Guid Id { get; set; }
         public ISet<string> Tags { get; set; }
-        public IGameState State { get; protected set; }
+        public IGameState State { get; set; }
 
         public override bool Equals(Object other)
         {

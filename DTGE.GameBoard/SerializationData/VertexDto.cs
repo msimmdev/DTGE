@@ -3,9 +3,9 @@ using DTGE.Common.Interfaces;
 
 namespace DTGE.GameBoard.SerializationData
 {
-    public class VertexSerializationData : IGameSerializationData
+    public class VertexDto : IGameDto
     {
         public string ObjectId { get; set; }
-        public List<EdgeSerializationData> Edges { get; set; }
+        public List<EdgeDto> Edges { get; set; }
     }
 }

@@ -42,27 +42,25 @@ namespace DTGE.GameBoard.Tests.UnitTests.DataTypes
         }
 
         [Fact]
-        public void GetSerializationData_CompleteData_ShouldMatchData()
+        public void GetDto_CompleteData_ShouldMatchData()
         {
             var sut = new QuadBoardPosition(3, 7);
 
-            var data = sut.GetSerializationData() as QuadBoardPositionSerializationData;
+            var data = sut.GetDto() as BoardPositionDto;
 
-            Assert.Equal(3, data.X);
-            Assert.Equal(7, data.Y);
+            Assert.Equal("3x7", data.Position);
         }
 
         [Fact]
-        public void PopulateSerializationData_CompleteData_ShouldMatchData()
+        public void UseDto_CompleteData_ShouldMatchData()
         {
             var sut = new QuadBoardPosition(3, 7);
-            var data = new QuadBoardPositionSerializationData()
+            var data = new BoardPositionDto()
             {
-                X = 4,
-                Y = 9
+                Position="4x9"
             };
 
-            sut.PopulateSerializationData(data);
+            sut.UseDto(data, null);
 
             Assert.Equal(4, sut.X);
             Assert.Equal(9, sut.Y);

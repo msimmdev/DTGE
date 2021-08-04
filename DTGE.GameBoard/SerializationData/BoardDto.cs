@@ -5,7 +5,7 @@ using DTGE.Common.Interfaces;
 
 namespace DTGE.GameBoard.SerializationData
 {
-    public class BoardSerializationData : IGameSerializationData
+    public class BoardDto : IGameDto
     {
         public string Id { get; set; }
         public List<string> BoardTileIds { get; set; }

@@ -112,7 +112,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
         }
 
         [Fact]
-        public void GetSerializationData_CompleteData_ShouldMatchData()
+        public void GetDto_CompleteData_ShouldMatchData()
         {
             var someGuid1 = Guid.NewGuid();
             var tile1 = new Mock<IBoardTile>();
@@ -152,8 +152,8 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
 
             sut.Vertices.Add(vertex1.Object);
             sut.Vertices.Add(vertex2.Object);
-            var data = sut.GetSerializationData();
-            var objectData = data as TileGraphSerializationData;
+            var data = sut.GetDto();
+            var objectData = data as TileGraphDto;
             var vertexData = objectData.Vertices.First();
             var edgeData = vertexData.Edges.First();
 
@@ -167,7 +167,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
         }
 
         [Fact]
-        public void PopulateSerializationData_CompleteData_ShouldMatchData()
+        public void UseDto_CompleteData_ShouldMatchData()
         {
             var someGuid = Guid.NewGuid();
             var otherGuid1 = Guid.NewGuid();
@@ -176,26 +176,26 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             var otherGuid2 = Guid.NewGuid();
             var tile2 = new Mock<IBoardTile>();
             tile2.Setup(t => t.Equals(tile1.Object)).Returns(true);
-            var edge1 = new EdgeSerializationData()
+            var edge1 = new EdgeDto()
             {
                 SourceObjectId = otherGuid1.ToString(),
                 TargetObjectId = otherGuid2.ToString(),
                 Distance = 4
             };
-            var vertex1 = new VertexSerializationData()
+            var vertex1 = new VertexDto()
             {
                 ObjectId = otherGuid1.ToString(),
-                Edges = new List<EdgeSerializationData>() { edge1 }
+                Edges = new List<EdgeDto>() { edge1 }
             };
-            var vertex2 = new VertexSerializationData()
+            var vertex2 = new VertexDto()
             {
                 ObjectId = otherGuid2.ToString(),
-                Edges = new List<EdgeSerializationData>()
+                Edges = new List<EdgeDto>()
             };
-            var data = new TileGraphSerializationData()
+            var data = new TileGraphDto()
             {
                 Id = someGuid.ToString(),
-                Vertices = new List<VertexSerializationData>() { vertex1, vertex2 }
+                Vertices = new List<VertexDto>() { vertex1, vertex2 }
             };
 
             sut.ObjectResolver = a =>
@@ -209,7 +209,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
                 }
                 throw new ArgumentException("Invalid GUID");
             };
-            sut.PopulateSerializationData(data);
+            sut.UseDto(data, null);
             var id = sut.Id;
             var vertices = sut.Vertices;
             var firstVertex = vertices.First();

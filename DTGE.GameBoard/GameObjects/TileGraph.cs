@@ -25,15 +25,15 @@ namespace DTGE.GameBoard.GameObjects
             return Vertices.SingleOrDefault(x => x.Object.Equals(tile));
         }
 
-        public IGameSerializationData GetSerializationData()
+        public IGameDto GetDto()
         {
-            var vertexList = new List<VertexSerializationData>();
+            var vertexList = new List<VertexDto>();
             foreach (var vertex in Vertices)
             {
-                var edgeList = new List<EdgeSerializationData>();
+                var edgeList = new List<EdgeDto>();
                 foreach (var edge in vertex.Edges)
                 {
-                    var edgeData = new EdgeSerializationData()
+                    var edgeData = new EdgeDto()
                     {
                         SourceObjectId = edge.Source.Object.Id.ToString(),
                         TargetObjectId = edge.Target.Object.Id.ToString(),
@@ -41,23 +41,23 @@ namespace DTGE.GameBoard.GameObjects
                     };
                     edgeList.Add(edgeData);
                 }
-                var vertexData = new VertexSerializationData()
+                var vertexData = new VertexDto()
                 {
                     ObjectId = vertex.Object.Id.ToString(),
                     Edges = edgeList
                 };
                 vertexList.Add(vertexData);
             }
-            return new TileGraphSerializationData()
+            return new TileGraphDto()
             {
                 Id = this.Id.ToString(),
                 Vertices = vertexList
             };
         }
 
-        public void PopulateSerializationData(IGameSerializationData data)
+        public void UseDto(IGameDto data, IObjectResolver resolver)
         {
-            var objectData = data as TileGraphSerializationData;
+            var objectData = data as TileGraphDto;
             Id = new Guid(objectData.Id);
             var vertexTracker = new Dictionary<Guid, Vertex<IBoardTile>>();
             foreach (var vertexData in objectData.Vertices)

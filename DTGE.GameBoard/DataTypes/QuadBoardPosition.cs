@@ -16,6 +16,11 @@ namespace DTGE.GameBoard.DataTypes
             Y = y;
         }
 
+        public QuadBoardPosition(BoardPositionDto data)
+        {
+            UseDto(data, null);
+        }
+
         public int X { get; set; }
         public int Y { get; set; }
 
@@ -42,20 +47,20 @@ namespace DTGE.GameBoard.DataTypes
             return hashCode;
         }
 
-        public IGameSerializationData GetSerializationData()
+        public IGameDto GetDto()
         {
-            return new QuadBoardPositionSerializationData()
+            return new BoardPositionDto()
             {
-                X = this.X,
-                Y = this.Y
+                Position = $"{X}x{Y}"
             };
         }
 
-        public void PopulateSerializationData(IGameSerializationData data)
+        public void UseDto(IGameDto data, IObjectResolver resolver)
         {
-            var objectData = data as QuadBoardPositionSerializationData;
-            X = objectData.X;
-            Y = objectData.Y;
+            var objectData = data as BoardPositionDto;
+            var posList = objectData.Position.Split('x');
+            X = int.Parse(posList[0]);
+            Y = int.Parse(posList[1]);
         }
 
         public override string ToString()

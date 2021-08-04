@@ -20,7 +20,7 @@ namespace DTGE.GameBoard.GameObjects
         public ISet<IBoardTile> Tiles { get; set; }
         public Func<Guid, IBoardTile> ObjectResolver { get; set; }
 
-        public IGameSerializationData GetSerializationData()
+        public IGameDto GetDto()
         {
             var tileIds = new List<string>();
             foreach (var tile in Tiles)
@@ -28,16 +28,16 @@ namespace DTGE.GameBoard.GameObjects
                 tileIds.Add(tile.Id.ToString());
             }
 
-            return new TileFieldSerializationData()
+            return new TileFieldDto()
             {
                 Id = Id.ToString(),
                 TileIds = tileIds
             };
         }
 
-        public void PopulateSerializationData(IGameSerializationData data)
+        public void UseDto(IGameDto data, IObjectResolver resolver)
         {
-            var objectData = data as TileFieldSerializationData;
+            var objectData = data as TileFieldDto;
             Id = new Guid(objectData.Id);
             foreach (var tileId in objectData.TileIds)
             {

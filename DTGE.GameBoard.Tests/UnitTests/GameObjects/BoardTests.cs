@@ -131,7 +131,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
         }
 
         [Fact]
-        public void GetSerializationData_CompleteData_ShouldMatchData()
+        public void GetDto_CompleteData_ShouldMatchData()
         {
             var someGuid = Guid.NewGuid();
             var someOtherGuid = Guid.NewGuid();
@@ -142,29 +142,29 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
 
             sut.Tiles.Add(someGuid, tile.Object);
             sut.Objects.Add(someOtherGuid, boardObject.Object);
-            var data = sut.GetSerializationData();
-            var boardData = data as BoardSerializationData;
+            var data = sut.GetDto();
+            var boardData = data as BoardDto;
 
-            Assert.IsAssignableFrom<BoardSerializationData>(data);
+            Assert.IsAssignableFrom<BoardDto>(data);
             Assert.Equal(sut.Id.ToString(), boardData.Id);
             Assert.Equal(someGuid.ToString(), boardData.BoardTileIds[0]);
             Assert.Equal(someOtherGuid.ToString(), boardData.ObjectIds[0]);
         }
 
         [Fact]
-        public void PopulateSerializationData_CompleteData_ShouldMatchData()
+        public void UseDto_CompleteData_ShouldMatchData()
         {
             var someGuid = Guid.NewGuid();
             var someGuid2 = Guid.NewGuid();
             var someGuid3 = Guid.NewGuid();
-            var data = new BoardSerializationData()
+            var data = new BoardDto()
             {
                 Id = someGuid.ToString(),
                 BoardTileIds = new List<string>() { someGuid2.ToString() },
                 ObjectIds = new List<string>() { someGuid3.ToString() },
             };
 
-            sut.PopulateSerializationData(data);
+            sut.UseDto(data, null);
 
             Assert.Equal(someGuid, sut.Id);
         }

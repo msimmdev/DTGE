@@ -18,7 +18,7 @@ namespace DTGE.GameBoard.GameObjects
         public int Distance { get; set; }
         public Func<Guid, IBoardTile> ObjectResolver { get; set; }
 
-        public IGameSerializationData GetSerializationData()
+        public IGameDto GetDto()
         {
             var tileIds = new List<string>();
 
@@ -27,7 +27,7 @@ namespace DTGE.GameBoard.GameObjects
                 tileIds.Add(tile.Id.ToString());
             }
 
-            return new TilePathSerializationData()
+            return new TilePathDto()
             {
                 Id = Id.ToString(),
                 TileIds = tileIds,
@@ -35,9 +35,9 @@ namespace DTGE.GameBoard.GameObjects
             };
         }
 
-        public void PopulateSerializationData(IGameSerializationData data)
+        public void UseDto(IGameDto data, IObjectResolver resolver)
         {
-            var objectData = data as TilePathSerializationData;
+            var objectData = data as TilePathDto;
             Id = new Guid(objectData.Id);
             Distance = objectData.Distance;
             foreach (var tileId in objectData.TileIds)

@@ -4,7 +4,9 @@ using System.Text;
 
 namespace DTGE.Common.Interfaces
 {
-    public interface IGameSerializationData
+    public interface IObjectResolver
     {
+        IIdentifiedObject Resolve(Guid id);
+        T Resolve<T>(Guid id);
     }
 }

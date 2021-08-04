@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace DTGE.GameBoard.SerializationData
 {
-    public class TileGraphSerializationData : IGameSerializationData
+    public class TileGraphDto : IGameDto
     {
         public string Id { get; set; }
-        public List<VertexSerializationData> Vertices { get; set; }
+        public List<VertexDto> Vertices { get; set; }
     }
 }

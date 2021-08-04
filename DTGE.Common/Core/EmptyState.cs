@@ -15,12 +15,12 @@ namespace DTGE.Common.Core
             return true;
         }
 
-        public IGameSerializationData GetSerializationData()
+        public IGameDto GetDto()
         {
             return new EmptySerializationData();
         }
 
-        public void PopulateSerializationData(IGameSerializationData data)
+        public void UseDto(IGameDto data, IObjectResolver resolver)
         {
         }
     }

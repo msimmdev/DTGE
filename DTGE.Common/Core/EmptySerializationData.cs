@@ -2,7 +2,7 @@
 
 namespace DTGE.Common.Core
 {
-    public class EmptySerializationData : IGameSerializationData
+    public class EmptySerializationData : IGameDto
     {
     }
 }

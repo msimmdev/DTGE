@@ -73,7 +73,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
         }
 
         [Fact]
-        public void GetSerializationData_CompleteData_ShouldMatchData()
+        public void GetDto_CompleteData_ShouldMatchData()
         {
             var someGuid = Guid.NewGuid();
             var board = new Mock<IBoard>();
@@ -83,30 +83,29 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
 
             sut.Board = board.Object;
             sut.Position = pos.Object;
-            var data = sut.GetSerializationData();
-            var boardObjectData = data as BoardObjectSerializationData;
+            var data = sut.GetDto();
+            var boardObjectData = data as BoardObjectDto;
 
             Assert.Equal(sut.Id.ToString(), boardObjectData.Id);
             Assert.Equal(someGuid.ToString(), boardObjectData.BoardId);
         }
 
         [Fact]
-        public void PopulateSerializationData_CompleteData_ShouldMatchData()
+        public void UseDto_CompleteData_ShouldMatchData()
         {
             var someGuid = Guid.NewGuid();
             var someGuid2 = Guid.NewGuid();
-            var data = new BoardObjectSerializationData()
+            var data = new BoardObjectDto()
             {
                 Id = someGuid.ToString(),
                 BoardId = someGuid2.ToString(),
-                Position = new QuadBoardPositionSerializationData()
+                Position = new BoardPositionDto()
                 {
-                    X = 3,
-                    Y = 7
+                    Position = "3x7"
                 }
             };
 
-            sut.PopulateSerializationData(data);
+            sut.UseDto(data, null);
             var pos = sut.Position as QuadBoardPosition;
 
             Assert.Equal(someGuid, sut.Id);
