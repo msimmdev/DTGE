@@ -13,6 +13,12 @@ namespace DTGE.Common.Base
             Completed = false;
         }
 
+        public IdentifiedAction(Action preExecute, Action postExecute) : this()
+        {
+            PreExecute = preExecute;
+            PostExecute = postExecute;
+        }
+
         public Guid Id { get; set; }
         public ISet<string> Tags { get; set; }
         public Action PreExecute { get; set; }

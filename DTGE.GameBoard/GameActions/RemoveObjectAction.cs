@@ -10,39 +10,39 @@ using DTGE.GameBoard.SerializationData;
 
 namespace DTGE.GameBoard.GameActions
 {
-    public class RemoveTileAction : IdentifiedAction, IRemoveTileAction
+    public class RemoveObjectAction : IdentifiedAction, IRemoveObjectAction
     {
-        public RemoveTileAction(IBoardTile tile)
+        public RemoveObjectAction(IBoardObject boardObject)
         {
-            Tile = tile;
+            Object = boardObject;
         }
 
-        public IBoardTile Tile { get; private set; }
+        public IBoardObject Object { get; private set; }
 
         public IGameDto GetDto()
         {
-            return new RemoveTileActionDto()
+            return new RemoveObjectActionDto()
             {
                 Id = Id.ToString(),
                 Tags = Tags.ToList(),
-                TileId = Tile.Id.ToString()
+                ObjectId = Object.Id.ToString()
             };
         }
 
         public void UseDto(IGameDto data, IObjectResolver resolver)
         {
-            var objectData = data as RemoveTileActionDto;
+            var objectData = data as RemoveObjectActionDto;
             Id = new Guid(objectData.Id);
             Tags = new HashSet<string>(objectData.Tags);
-            Tile = resolver.Resolve<IBoardTile>(new Guid(objectData.TileId));
+            Object = resolver.Resolve<IBoardObject>(new Guid(objectData.ObjectId));
         }
 
         public ValidationResult Validate()
         {
-            if (Tile == null)
+            if (Object == null)
                 return ValidationResult.NewError("Tile is required for RemoveTile action.");
 
-            if (Tile.Board == null)
+            if (Object.Board == null)
                 return ValidationResult.NewError("Tile is not attached to board.");
 
             return ValidationResult.NewSuccess();
@@ -50,9 +50,9 @@ namespace DTGE.GameBoard.GameActions
 
         protected override void PerformAction()
         {
-            Tile.Board.Tiles.Remove(Tile.Id);
-            Tile.Board = null;
-            Tile.Position = null;
+            Object.Board.Tiles.Remove(Object.Id);
+            Object.Board = null;
+            Object.Position = null;
         }
     }
 }

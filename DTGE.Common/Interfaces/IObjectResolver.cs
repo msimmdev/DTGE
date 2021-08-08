@@ -8,5 +8,6 @@ namespace DTGE.Common.Interfaces
     {
         IIdentifiedObject Resolve(Guid id);
         T Resolve<T>(Guid id);
+        T Create<T>(IGameDto data);
     }
 }

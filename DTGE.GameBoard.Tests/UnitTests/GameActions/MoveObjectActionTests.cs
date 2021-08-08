@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Xunit;
 using Moq;
-using DTGE.GameBoard.DataTypes;
 using DTGE.GameBoard.GameActions;
 using DTGE.GameBoard.Interfaces.GameObjects;
 using DTGE.GameBoard.Interfaces.DataTypes;
@@ -11,26 +10,26 @@ using DTGE.Common.Interfaces;
 
 namespace DTGE.GameBoard.Tests.UnitTests.GameActions
 {
-    public class MoveTileActionTests
+    public class MoveObjectActionTests
     {
-        private Mock<IBoardTile> mockTile;
+        private Mock<IBoardObject> mockObject;
         private Mock<IBoardPosition> mockPosition;
-        private MoveTileAction sut;
-        public MoveTileActionTests()
+        private MoveObjectAction sut;
+        public MoveObjectActionTests()
         {
-            mockTile = new Mock<IBoardTile>();
-            mockTile.Setup(x => x.Equals(mockTile.Object)).Returns(true);
+            mockObject = new Mock<IBoardObject>();
+            mockObject.Setup(x => x.Equals(mockObject.Object)).Returns(true);
             mockPosition = new Mock<IBoardPosition>();
             mockPosition.Setup(x => x.Equals(mockPosition.Object)).Returns(true);
-            sut = new MoveTileAction(mockTile.Object, mockPosition.Object);
+            sut = new MoveObjectAction(mockObject.Object, mockPosition.Object);
         }
 
         [Fact]
-        public void Constructor_GetTile_ShouldReturnMatchingValue()
+        public void Constructor_GetObject_ShouldReturnMatchingValue()
         {
-            var tile = sut.Tile;
+            var tile = sut.Object;
 
-            Assert.Same(mockTile.Object, tile);
+            Assert.Same(mockObject.Object, tile);
         }
 
         [Fact]
@@ -46,7 +45,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
         {
             var mockBoard = new Mock<IBoard>();
             mockBoard.Setup(x => x.HasTile(It.IsAny<IBoardPosition>())).Returns(false);
-            mockTile.SetupGet(x => x.Board).Returns(mockBoard.Object);
+            mockObject.SetupGet(x => x.Board).Returns(mockBoard.Object);
 
             var result = sut.Validate();
 
@@ -54,7 +53,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
         }
 
         [Fact]
-        public void Validate_WithOrphanedTile_ShouldReturnError()
+        public void Validate_WithOrphanedObject_ShouldReturnError()
         {
 
             var result = sut.Validate();
@@ -68,7 +67,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
         {
             var mockBoard = new Mock<IBoard>();
             mockBoard.Setup(x => x.HasTile(It.IsAny<IBoardPosition>())).Returns(true);
-            mockTile.SetupGet(x => x.Board).Returns(mockBoard.Object);
+            mockObject.SetupGet(x => x.Board).Returns(mockBoard.Object);
 
             var result = sut.Validate();
 
@@ -79,47 +78,47 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
         [Fact]
         public void Execute_WithValidData_ShouldChangeTilePosition()
         {
-            mockTile.SetupProperty(x => x.Position);
+            mockObject.SetupProperty(x => x.Position);
 
             sut.Execute();
 
-            Assert.Same(mockPosition.Object, sut.Tile.Position);
+            Assert.Same(mockPosition.Object, sut.Object.Position);
         }
 
         [Fact]
         public void GetDto_FullyInitialized_ShouldReturnValidDto()
         {
             var tileGuid = Guid.NewGuid();
-            var boardPositionDto = new BoardPositionDto() { Position = "3x4" };
-            mockTile.SetupGet(x => x.Id).Returns(tileGuid);
+            var boardPositionDto = new BoardPositionDto();
+            mockObject.SetupGet(x => x.Id).Returns(tileGuid);
             mockPosition.Setup(x => x.GetDto()).Returns(boardPositionDto);
 
             var result = sut.GetDto();
-            var dto = result as MoveTileActionDto;
+            var dto = result as MoveObjectActionDto;
 
             Assert.Equal(boardPositionDto.Position, dto.NewPosition.Position);
             Assert.Equal(sut.Id.ToString(), dto.Id);
-            Assert.Equal(tileGuid.ToString(), dto.TileId);
+            Assert.Equal(tileGuid.ToString(), dto.ObjectId);
         }
 
         [Fact]
         public void UseDto_AllValues_ShouldSetValues()
         {
             var idGuid = Guid.NewGuid();
-            var tileGuid = Guid.NewGuid();
+            var objectGuid = Guid.NewGuid();
             var mockPosition2 = new Mock<IBoardPosition>();
             mockPosition2.Setup(x => x.Equals(mockPosition.Object)).Returns(true);
 
-            mockTile.SetupGet(x => x.Id).Returns(tileGuid);
+            mockObject.SetupGet(x => x.Id).Returns(objectGuid);
 
             var resolver = new Mock<IObjectResolver>();
-            resolver.Setup(x => x.Resolve<IBoardTile>(It.IsAny<Guid>())).Returns(mockTile.Object);
+            resolver.Setup(x => x.Resolve<IBoardObject>(It.IsAny<Guid>())).Returns(mockObject.Object);
             resolver.Setup(x => x.Create<IBoardPosition>(It.IsAny<BoardPositionDto>())).Returns(mockPosition2.Object);
 
-            var dto = new MoveTileActionDto()
+            var dto = new MoveObjectActionDto()
             {
                 Id = idGuid.ToString(),
-                TileId = tileGuid.ToString(),
+                ObjectId = objectGuid.ToString(),
                 NewPosition = new BoardPositionDto(),
                 Tags = new List<string>()
             };
@@ -127,7 +126,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
             sut.UseDto(dto, resolver.Object);
 
             Assert.Equal(idGuid, sut.Id);
-            Assert.Equal(tileGuid, sut.Tile.Id);
+            Assert.Equal(objectGuid, sut.Object.Id);
             Assert.Same(mockPosition2.Object, sut.NewPosition);
         }
     }

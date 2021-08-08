@@ -51,6 +51,7 @@ namespace DTGE.GameBoard.DataTypes
         {
             return new BoardPositionDto()
             {
+                Type = this.GetType().AssemblyQualifiedName,
                 Position = $"{X}x{Y}"
             };
         }

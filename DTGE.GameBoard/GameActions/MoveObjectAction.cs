@@ -11,25 +11,25 @@ using DTGE.GameBoard.SerializationData;
 
 namespace DTGE.GameBoard.GameActions
 {
-    public class MoveTileAction : IdentifiedAction, IMoveTileAction
+    public class MoveObjectAction : IdentifiedAction, IMoveObjectAction
     {
-        public MoveTileAction(IBoardTile tile, IBoardPosition newPosition)
+        public MoveObjectAction(IBoardObject boardObject, IBoardPosition newPosition)
         {
             Id = Guid.NewGuid();
-            Tile = tile;
+            Object = boardObject;
             NewPosition = newPosition;
         }
 
-        public IBoardTile Tile { get; private set; }
+        public IBoardObject Object { get; private set; }
 
         public IBoardPosition NewPosition { get; private set; }
 
         public IGameDto GetDto()
         {
-            return new MoveTileActionDto()
+            return new MoveObjectActionDto()
             {
                 Id = Id.ToString(),
-                TileId = Tile.Id.ToString() ?? null,
+                ObjectId = Object.Id.ToString() ?? null,
                 NewPosition = NewPosition.GetDto() as BoardPositionDto ?? null,
                 Tags = Tags.ToList()
             };
@@ -37,25 +37,25 @@ namespace DTGE.GameBoard.GameActions
 
         public void UseDto(IGameDto data, IObjectResolver resolver)
         {
-            var objectData = data as MoveTileActionDto;
+            var objectData = data as MoveObjectActionDto;
             Id = new Guid(objectData.Id);
-            Tile = resolver.Resolve<IBoardTile>(new Guid(objectData.TileId));
+            Object = resolver.Resolve<IBoardObject>(new Guid(objectData.ObjectId));
             NewPosition = resolver.Create<IBoardPosition>(objectData.NewPosition);
             Tags = new HashSet<string>(objectData.Tags);
         }
 
         public ValidationResult Validate()
         {
-            if (Tile == null)
+            if (Object == null)
                 return ValidationResult.NewError("Tile is required for MoveTile action.");
 
             if (NewPosition == null)
                 return ValidationResult.NewError("NewPosition is required for PlaceTileOnBoard action.");
 
-            if (Tile.Board == null)
+            if (Object.Board == null)
                 return ValidationResult.NewError("Tile is not attached to a board.");
 
-            if (Tile.Board.HasTile(NewPosition))
+            if (Object.Board.HasTile(NewPosition))
                 return ValidationResult.NewError("A tile already exists at the given position.");
 
             return ValidationResult.NewSuccess();
@@ -63,7 +63,7 @@ namespace DTGE.GameBoard.GameActions
 
         protected override void PerformAction()
         {
-            Tile.Position = NewPosition;
+            Object.Position = NewPosition;
         }
     }
 }
