@@ -81,5 +81,21 @@ namespace DTGE.GameBoard.Tests.UnitTests.DataTypes
             Assert.False(check);
         }
 
+        [Fact]
+        public void GetHashCode__WithValues_ShouldReturnInt()
+        {
+            var source = new Mock<IVertex<IBoardTile>>();
+            var target = new Mock<IVertex<IBoardTile>>();
+            var distance = 17;
+
+            var sut1 = new Edge<IBoardTile>(source.Object, target.Object, distance);
+            var sut2 = new Edge<IBoardTile>(source.Object, target.Object, distance);
+
+            var result1 = sut1.GetHashCode();
+            var result2 = sut2.GetHashCode();
+            var result = result1 == result2;
+
+            Assert.True(result);
+        }
     }
 }

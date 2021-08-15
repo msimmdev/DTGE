@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTGE.GameBoard", "DTGE.Game
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTGE.GameBoard.Tests", "DTGE.GameBoard.Tests\DTGE.GameBoard.Tests.csproj", "{6B51E0A5-5ABA-4181-8599-536219B0E5D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTGE.Common.Tests", "DTGE.Common.Tests\DTGE.Common.Tests.csproj", "{4628B7F6-CB52-466F-AF37-D8629CB75A88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6B51E0A5-5ABA-4181-8599-536219B0E5D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B51E0A5-5ABA-4181-8599-536219B0E5D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B51E0A5-5ABA-4181-8599-536219B0E5D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4628B7F6-CB52-466F-AF37-D8629CB75A88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4628B7F6-CB52-466F-AF37-D8629CB75A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4628B7F6-CB52-466F-AF37-D8629CB75A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4628B7F6-CB52-466F-AF37-D8629CB75A88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

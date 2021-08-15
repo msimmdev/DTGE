@@ -7,6 +7,8 @@ using DTGE.Common.Core;
 using DTGE.GameBoard.GameObjects;
 using DTGE.GameBoard.Interfaces.GameObjects;
 using DTGE.GameBoard.SerializationData;
+using DTGE.Common.Base;
+using DTGE.Common.Interfaces;
 
 namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
 {
@@ -111,6 +113,46 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             Assert.Equal(someGuid, sut.Id);
             Assert.Single(sut.Tiles);
             Assert.Same(tile.Object, gotTile);
+        }
+
+        [Fact]
+        public void Equals_OtherField_ShouldReturnFalse()
+        {
+            var otherSut = new TileField();
+
+            var result = sut.Equals(otherSut as IdentifiedObject);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherFieldInterface_ShouldReturnFalse()
+        {
+            var otherSut = new TileField();
+
+            var result = sut.Equals(otherSut as IIdentifiedObject);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherObject_ShouldReturnFalse()
+        {
+            var otherSut = new TileField();
+
+            var result = sut.Equals(otherSut as Object);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void GetHashCode_OtherObject_ShouldNotMatch()
+        {
+            var otherSut = new TileField();
+
+            var result = sut.GetHashCode() == otherSut.GetHashCode();
+
+            Assert.False(result);
         }
     }
 }

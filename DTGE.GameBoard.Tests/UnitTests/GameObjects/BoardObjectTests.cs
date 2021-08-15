@@ -3,6 +3,8 @@ using System.Linq;
 using Xunit;
 using Moq;
 using DTGE.Common.Core;
+using DTGE.Common.Base;
+using DTGE.Common.Interfaces;
 using DTGE.GameBoard.GameObjects;
 using DTGE.GameBoard.Interfaces.GameObjects;
 using DTGE.GameBoard.Interfaces.DataTypes;
@@ -91,6 +93,19 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
         }
 
         [Fact]
+        public void GetDto_IncompleteData_ShouldMatchData()
+        {
+            var pos = new Mock<IBoardPosition>();
+            pos.Setup(x => x.Equals(pos.Object)).Returns(true);
+
+            var data = sut.GetDto();
+            var boardObjectData = data as BoardObjectDto;
+
+            Assert.Equal(sut.Id.ToString(), boardObjectData.Id);
+            Assert.Null(boardObjectData.BoardId);
+        }
+
+        [Fact]
         public void UseDto_CompleteData_ShouldMatchData()
         {
             var someGuid = Guid.NewGuid();
@@ -111,6 +126,63 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             Assert.Equal(someGuid, sut.Id);
             Assert.Equal(3, pos.X);
             Assert.Equal(7, pos.Y);
+        }
+
+        [Fact]
+        public void UseDto_IncompleteData_ShouldHaveNull()
+        {
+            var someGuid = Guid.NewGuid();
+            var data = new BoardObjectDto()
+            {
+                Id = someGuid.ToString(),
+                BoardId = null,
+                Position = null,
+            };
+
+            sut.UseDto(data, null);
+
+            Assert.Equal(someGuid, sut.Id);
+            Assert.Null(sut.Position);
+        }
+
+        [Fact]
+        public void Equals_OtherBoardObject_ShouldReturnFalse()
+        {
+            var otherSut = new BoardObject();
+
+            var result = sut.Equals(otherSut as IdentifiedObject);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherBoardObjectInterface_ShouldReturnFalse()
+        {
+            var otherSut = new BoardObject();
+
+            var result = sut.Equals(otherSut as IIdentifiedObject);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherObject_ShouldReturnFalse()
+        {
+            var otherSut = new BoardObject();
+
+            var result = sut.Equals(otherSut as Object);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void GetHashCode_OtherObject_ShouldNotMatch()
+        {
+            var otherSut = new BoardObject();
+
+            var result = sut.GetHashCode() == otherSut.GetHashCode();
+
+            Assert.False(result);
         }
     }
 }

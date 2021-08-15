@@ -29,8 +29,8 @@ namespace DTGE.GameBoard.GameActions
             return new MoveTileActionDto()
             {
                 Id = Id.ToString(),
-                TileId = Tile.Id.ToString() ?? null,
-                NewPosition = NewPosition.GetDto() as BoardPositionDto ?? null,
+                TileId = Tile.Id.ToString(),
+                NewPosition = NewPosition.GetDto() as BoardPositionDto,
                 Tags = Tags.ToList()
             };
         }
@@ -46,12 +46,6 @@ namespace DTGE.GameBoard.GameActions
 
         public ValidationResult Validate()
         {
-            if (Tile == null)
-                return ValidationResult.NewError("Tile is required for MoveTile action.");
-
-            if (NewPosition == null)
-                return ValidationResult.NewError("NewPosition is required for PlaceTileOnBoard action.");
-
             if (Tile.Board == null)
                 return ValidationResult.NewError("Tile is not attached to a board.");
 

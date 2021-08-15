@@ -1,7 +1,4 @@
 ﻿using DTGE.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DTGE.Common.Core
 {

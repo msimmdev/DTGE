@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Xunit;
 using Moq;
 using DTGE.Common.Core;
+using DTGE.Common.Base;
+using DTGE.Common.Interfaces;
 using DTGE.GameBoard.GameObjects;
 using DTGE.GameBoard.Interfaces.GameObjects;
 using DTGE.GameBoard.SerializationData;
@@ -123,6 +125,46 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             Assert.Single(sut.Tiles);
             Assert.Same(tile.Object, gotTile);
             Assert.Equal(7, sut.Distance);
+        }
+
+        [Fact]
+        public void Equals_OtherPath_ShouldReturnFalse()
+        {
+            var otherSut = new TilePath();
+
+            var result = sut.Equals(otherSut as IdentifiedObject);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherPathInterface_ShouldReturnFalse()
+        {
+            var otherSut = new TilePath();
+
+            var result = sut.Equals(otherSut as IIdentifiedObject);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherObject_ShouldReturnFalse()
+        {
+            var otherSut = new TilePath();
+
+            var result = sut.Equals(otherSut as Object);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void GetHashCode_OtherObject_ShouldNotMatch()
+        {
+            var otherSut = new TilePath();
+
+            var result = sut.GetHashCode() == otherSut.GetHashCode();
+
+            Assert.False(result);
         }
     }
 }

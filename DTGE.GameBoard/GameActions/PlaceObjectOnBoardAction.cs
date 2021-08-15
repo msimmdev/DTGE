@@ -49,15 +49,6 @@ namespace DTGE.GameBoard.GameActions
 
         public ValidationResult Validate()
         {
-            if (Object == null)
-                return ValidationResult.NewError("Object is required for PlaceTileOnBoard action.");
-
-            if (Board == null)
-                return ValidationResult.NewError("Board is required for PlaceTileOnBoard action.");
-
-            if (Position == null)
-                return ValidationResult.NewError("Position is required for PlaceTileOnBoard action.");
-
             if (Object.Board != null)
                 return ValidationResult.NewError("Object is already attached to a board.");
 
@@ -73,12 +64,12 @@ namespace DTGE.GameBoard.GameActions
 
         public void Execute(IEventHandler handler)
         {
-            handler.Dispatch<ActionStartEvent<PlaceObjectOnBoardAction>>(
+            handler.Dispatch(
                 new ActionStartEvent<PlaceObjectOnBoardAction>(this));
 
             PerformAction(handler);
 
-            handler.Dispatch<ActionEndEvent<PlaceObjectOnBoardAction>>(
+            handler.Dispatch(
                 new ActionEndEvent<PlaceObjectOnBoardAction>(this));
         }
 

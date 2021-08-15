@@ -30,8 +30,8 @@ namespace DTGE.GameBoard.GameActions
             return new MoveObjectActionDto()
             {
                 Id = Id.ToString(),
-                ObjectId = Object.Id.ToString() ?? null,
-                NewPosition = NewPosition.GetDto() as BoardPositionDto ?? null,
+                ObjectId = Object.Id.ToString(),
+                NewPosition = NewPosition.GetDto() as BoardPositionDto,
                 Tags = Tags.ToList()
             };
         }
@@ -47,12 +47,6 @@ namespace DTGE.GameBoard.GameActions
 
         public ValidationResult Validate()
         {
-            if (Object == null)
-                return ValidationResult.NewError("Tile is required for MoveTile action.");
-
-            if (NewPosition == null)
-                return ValidationResult.NewError("NewPosition is required for PlaceTileOnBoard action.");
-
             if (Object.Board == null)
                 return ValidationResult.NewError("Object is not attached to a board.");
 
@@ -64,12 +58,12 @@ namespace DTGE.GameBoard.GameActions
 
         public void Execute(IEventHandler handler)
         {
-            handler.Dispatch<ActionStartEvent<MoveObjectAction>>(
+            handler.Dispatch(
                 new ActionStartEvent<MoveObjectAction>(this));
 
             PerformAction(handler);
 
-            handler.Dispatch<ActionEndEvent<MoveObjectAction>>(
+            handler.Dispatch(
                 new ActionEndEvent<MoveObjectAction>(this));
         }
 

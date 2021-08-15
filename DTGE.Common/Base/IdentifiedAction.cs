@@ -20,7 +20,7 @@ namespace DTGE.Common.Base
 
         public override bool Equals(Object other)
         {
-            return Equals(other as IdentifiedObject);
+            return Equals(other as IIdentifiedAction);
         }
 
         public bool Equals(IIdentifiedAction other)

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Xunit;
 using Moq;
 using DTGE.Common.Core;
+using DTGE.Common.Base;
+using DTGE.Common.Interfaces;
 using DTGE.GameBoard.Interfaces.DataTypes;
 using DTGE.GameBoard.Interfaces.GameObjects;
 using DTGE.GameBoard.GameObjects;
@@ -223,7 +225,46 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             Assert.Equal(4, firstEdge.Distance);
             Assert.Equal(tile1.Object, firstEdge.Source.Object);
             Assert.Equal(tile2.Object, firstEdge.Target.Object);
+        }
 
+        [Fact]
+        public void Equals_OtherGraph_ShouldReturnFalse()
+        {
+            var otherSut = new TileGraph();
+
+            var result = sut.Equals(otherSut as IdentifiedObject);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherGraphInterface_ShouldReturnFalse()
+        {
+            var otherSut = new TileGraph();
+
+            var result = sut.Equals(otherSut as IIdentifiedObject);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherObject_ShouldReturnFalse()
+        {
+            var otherSut = new TileGraph();
+
+            var result = sut.Equals(otherSut as Object);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void GetHashCode_OtherObject_ShouldNotMatch()
+        {
+            var otherSut = new TileGraph();
+
+            var result = sut.GetHashCode() == otherSut.GetHashCode();
+
+            Assert.False(result);
         }
     }
 }

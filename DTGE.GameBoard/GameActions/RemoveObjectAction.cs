@@ -39,9 +39,6 @@ namespace DTGE.GameBoard.GameActions
 
         public ValidationResult Validate()
         {
-            if (Object == null)
-                return ValidationResult.NewError("Tile is required for RemoveTile action.");
-
             if (Object.Board == null)
                 return ValidationResult.NewError("Tile is not attached to board.");
 

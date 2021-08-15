@@ -18,8 +18,8 @@ namespace DTGE.GameBoard.GameObjects
             return new BoardObjectDto()
             {
                 Id = this.Id.ToString(),
-                BoardId = this.Board?.Id.ToString() ?? null,
-                Position = this.Position?.GetDto() as BoardPositionDto ?? null
+                BoardId = this.Board?.Id.ToString(),
+                Position = this.Position?.GetDto() as BoardPositionDto
             };
         }
 
@@ -30,13 +30,10 @@ namespace DTGE.GameBoard.GameObjects
 
             if (objectData.Position != null)
             {
-                var posType = objectData.Position.GetType();
-                if (posType == typeof(BoardPositionDto))
-                {
-                    var posData = objectData.Position as BoardPositionDto;
-                    var newPos = new QuadBoardPosition(posData);
-                    Position = newPos;
-                }
+
+                var posData = objectData.Position as BoardPositionDto;
+                var newPos = new QuadBoardPosition(posData);
+                Position = newPos;
             }
         }
     }

@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DTGE.GameBoard\DTGE.GameBoard.csproj" />
+    <ProjectReference Include="..\DTGE.Common\DTGE.Common.csproj" />
   </ItemGroup>
 
 </Project>

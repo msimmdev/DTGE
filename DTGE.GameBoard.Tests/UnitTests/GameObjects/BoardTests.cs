@@ -3,7 +3,9 @@ using System.Linq;
 using System.Collections.Generic;
 using Xunit;
 using Moq;
+using DTGE.Common.Base;
 using DTGE.Common.Core;
+using DTGE.Common.Interfaces;
 using DTGE.GameBoard.GameObjects;
 using DTGE.GameBoard.Interfaces.GameObjects;
 using DTGE.GameBoard.Interfaces.DataTypes;
@@ -167,6 +169,46 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             sut.UseDto(data, null);
 
             Assert.Equal(someGuid, sut.Id);
+        }
+
+        [Fact]
+        public void Equals_OtherBoard_ShouldReturnFalse()
+        {
+            var otherSut = new Board();
+
+            var result = sut.Equals(otherSut as IdentifiedObject);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherBoardInterface_ShouldReturnFalse()
+        {
+            var otherSut = new Board();
+
+            var result = sut.Equals(otherSut as IIdentifiedObject);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherObject_ShouldReturnFalse()
+        {
+            var otherSut = new Board();
+
+            var result = sut.Equals(otherSut as Object);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void GetHashCode_OtherObject_ShouldNotMatch()
+        {
+            var otherSut = new Board();
+
+            var result = sut.GetHashCode() == otherSut.GetHashCode();
+
+            Assert.False(result);
         }
     }
 }

@@ -48,15 +48,6 @@ namespace DTGE.GameBoard.GameActions
 
         public ValidationResult Validate()
         {
-            if (Tile == null)
-                return ValidationResult.NewError("Tile is required for PlaceTileOnBoard action.");
-
-            if (Board == null)
-                return ValidationResult.NewError("Board is required for PlaceTileOnBoard action.");
-
-            if (Position == null)
-                return ValidationResult.NewError("Position is required for PlaceTileOnBoard action.");
-
             if (Tile.Board != null)
                 return ValidationResult.NewError("Tile is already attached to a board.");
 

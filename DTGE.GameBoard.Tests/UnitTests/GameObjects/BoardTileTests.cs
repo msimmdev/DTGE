@@ -2,11 +2,12 @@
 using Xunit;
 using Moq;
 using DTGE.Common.Core;
+using DTGE.Common.Interfaces;
+using DTGE.Common.Base;
 using DTGE.GameBoard.GameObjects;
 using DTGE.GameBoard.Interfaces.GameObjects;
 using DTGE.GameBoard.Interfaces.DataTypes;
 using DTGE.GameBoard.SerializationData;
-using DTGE.GameBoard.DataTypes;
 
 namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
 {
@@ -80,7 +81,44 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
         }
 
         [Fact]
+        public void GetDto_IncompleteData_ShouldMatchData()
+        {
+            var data = sut.GetDto();
+            var boardTileData = data as BoardTileDto;
+
+            Assert.Equal(sut.Id.ToString(), boardTileData.Id);
+            Assert.Null(boardTileData.BoardId);
+        }
+
+        [Fact]
         public void UseDto_CompleteData_ShouldMatchData()
+        {
+            var someGuid = Guid.NewGuid();
+            var someGuid2 = Guid.NewGuid();
+            var mockPosition = new Mock<IBoardPosition>();
+            mockPosition.SetupAllProperties();
+            var posDto = new BoardPositionDto()
+            {
+                Position = "3x7"
+            };
+            var data = new BoardTileDto()
+            {
+                Id = someGuid.ToString(),
+                BoardId = someGuid2.ToString(),
+                Position = posDto
+            };
+
+            var mockResolver = new Mock<IResolver>();
+            mockResolver.Setup(x => x.Create<IBoardPosition>(posDto)).Returns(mockPosition.Object);
+
+            sut.UseDto(data, mockResolver.Object);
+
+            Assert.Equal(someGuid, sut.Id);
+            Assert.Same(mockPosition.Object, sut.Position);
+        }
+
+        [Fact]
+        public void UseDto_IncompleteData_ShouldMatchData()
         {
             var someGuid = Guid.NewGuid();
             var someGuid2 = Guid.NewGuid();
@@ -88,18 +126,54 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameObjects
             {
                 Id = someGuid.ToString(),
                 BoardId = someGuid2.ToString(),
-                Position = new BoardPositionDto()
-                {
-                    Position = "3x7"
-                }
             };
 
-            sut.UseDto(data, null);
-            var pos = sut.Position as QuadBoardPosition;
+            var mockResolver = new Mock<IResolver>();
+
+            sut.UseDto(data, mockResolver.Object);
 
             Assert.Equal(someGuid, sut.Id);
-            Assert.Equal(3, pos.X);
-            Assert.Equal(7, pos.Y);
+            Assert.Null(sut.Position);
+        }
+
+        [Fact]
+        public void Equals_OtherTile_ShouldReturnFalse()
+        {
+            var otherSut = new BoardTile();
+
+            var result = sut.Equals(otherSut as IdentifiedObject);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherTileInterface_ShouldReturnFalse()
+        {
+            var otherSut = new BoardTile();
+
+            var result = sut.Equals(otherSut as IIdentifiedObject);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherObject_ShouldReturnFalse()
+        {
+            var otherSut = new BoardTile();
+
+            var result = sut.Equals(otherSut as Object);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void GetHashCode_OtherObject_ShouldNotMatch()
+        {
+            var otherSut = new BoardTile();
+
+            var result = sut.GetHashCode() == otherSut.GetHashCode();
+
+            Assert.False(result);
         }
     }
 }

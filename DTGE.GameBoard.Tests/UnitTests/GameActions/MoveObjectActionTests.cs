@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using Xunit;
 using Moq;
+using DTGE.Common.Interfaces;
+using DTGE.Common.Core;
+using DTGE.Common.Base;
 using DTGE.GameBoard.GameActions;
 using DTGE.GameBoard.Interfaces.GameObjects;
 using DTGE.GameBoard.Interfaces.DataTypes;
 using DTGE.GameBoard.SerializationData;
-using DTGE.Common.Interfaces;
+using DTGE.GameBoard.GameEvents;
 
 namespace DTGE.GameBoard.Tests.UnitTests.GameActions
 {
@@ -91,6 +94,23 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
         }
 
         [Fact]
+        public void Execute_WithValidData_ShouldTriggerEvents()
+        {
+            var mockTile = new Mock<IBoardTile>();
+            var mockBoard = new Mock<IBoard>();
+            mockBoard.Setup(x => x.FindTile(It.IsAny<IBoardPosition>())).Returns(mockTile.Object);
+            mockObject.SetupGet(x => x.Board).Returns(mockBoard.Object);
+            mockObject.SetupProperty(x => x.Position);
+            var mockEventHandler = new Mock<IEventHandler>();
+
+            sut.Execute(mockEventHandler.Object);
+
+            mockEventHandler.Verify(x => x.Dispatch(It.IsAny<ActionStartEvent<MoveObjectAction>>()), Times.Once);
+            mockEventHandler.Verify(x => x.Dispatch(It.IsAny<ActionEndEvent<MoveObjectAction>>()), Times.Once);
+            mockEventHandler.Verify(x => x.Dispatch(It.IsAny<ObjectMovesToTileEvent>()), Times.Once);
+        }
+
+        [Fact]
         public void GetDto_FullyInitialized_ShouldReturnValidDto()
         {
             var tileGuid = Guid.NewGuid();
@@ -133,6 +153,46 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
             Assert.Equal(idGuid, sut.Id);
             Assert.Equal(objectGuid, sut.Object.Id);
             Assert.Same(mockPosition2.Object, sut.NewPosition);
+        }
+
+        [Fact]
+        public void Equals_OtherAction_ShouldReturnFalse()
+        {
+            var otherSut = new MoveObjectAction(mockObject.Object, mockPosition.Object);
+
+            var result = sut.Equals(otherSut as IdentifiedAction);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherActionInterface_ShouldReturnFalse()
+        {
+            var otherSut = new MoveObjectAction(mockObject.Object, mockPosition.Object);
+
+            var result = sut.Equals(otherSut as IIdentifiedAction);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_OtherObject_ShouldReturnFalse()
+        {
+            var otherSut = new MoveObjectAction(mockObject.Object, mockPosition.Object);
+
+            var result = sut.Equals(otherSut as Object);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void GetHashCode_OtherObject_ShouldNotMatch()
+        {
+            var otherSut = new MoveObjectAction(mockObject.Object, mockPosition.Object);
+
+            var result = sut.GetHashCode() == otherSut.GetHashCode();
+
+            Assert.False(result);
         }
     }
 }

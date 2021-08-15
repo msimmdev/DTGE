@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Xunit;
-using Moq;
 using DTGE.GameBoard.DataTypes;
 using DTGE.GameBoard.SerializationData;
+using DTGE.GameBoard.Interfaces.DataTypes;
 
 namespace DTGE.GameBoard.Tests.UnitTests.DataTypes
 {
@@ -27,6 +27,26 @@ namespace DTGE.GameBoard.Tests.UnitTests.DataTypes
             Assert.True(sut2.Equals(sut1));
         }
 
+        [Fact]
+        public void Equals_MatchingValuesAsObject_ShouldReturnTrue()
+        {
+            var sut1 = new QuadBoardPosition(3, 7);
+            var sut2 = new QuadBoardPosition(3, 7);
+
+            Assert.True(sut1.Equals(sut2 as Object));
+            Assert.True(sut2.Equals(sut1 as Object));
+        }
+
+        [Fact]
+        public void Equals_MatchingValuesAsInterface_ShouldReturnTrue()
+        {
+            var sut1 = new QuadBoardPosition(3, 7);
+            var sut2 = new QuadBoardPosition(3, 7);
+
+            Assert.True(sut1.Equals(sut2 as IBoardPosition));
+            Assert.True(sut2.Equals(sut1 as IBoardPosition));
+        }
+
         [Theory]
         [InlineData(3, 8)]
         [InlineData(4, 7)]
@@ -39,6 +59,29 @@ namespace DTGE.GameBoard.Tests.UnitTests.DataTypes
 
             Assert.False(sut1.Equals(sut2));
             Assert.False(sut2.Equals(sut1));
+        }
+
+        [Fact]
+        public void ToString_WithPosition_ShouldReturnAppropriateString()
+        {
+            var sut = new QuadBoardPosition(3, 7);
+
+            var result = sut.ToString();
+
+            Assert.Equal("3:7", result);
+        }
+
+        [Fact]
+        public void GetHashCode__WithValues_ShouldReturnInt()
+        {
+            var sut1 = new QuadBoardPosition(3, 7);
+            var sut2 = new QuadBoardPosition(3, 7);
+
+            var result1 = sut1.GetHashCode();
+            var result2 = sut2.GetHashCode();
+            var result = result1 == result2;
+
+            Assert.True(result);
         }
 
         [Fact]
