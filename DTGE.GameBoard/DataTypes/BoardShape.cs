@@ -5,6 +5,11 @@ namespace DTGE.GameBoard.DataTypes
 {
     public class BoardShape : IBoardShape
     {
-        public IEnumerable<IBoardPosition> Positions { get; set; }
+        public BoardShape(IEnumerable<IBoardPosition> positions)
+        {
+            Positions = positions;
+        }
+
+        public IEnumerable<IBoardPosition> Positions { get; }
     }
 }

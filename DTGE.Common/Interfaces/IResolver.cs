@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DTGE.Common.Interfaces
 {
@@ -8,6 +6,7 @@ namespace DTGE.Common.Interfaces
     {
         IIdentifiedObject Resolve(Guid id);
         T Resolve<T>(Guid id);
+        T Create<T>();
         T Create<T>(IGameDto data);
     }
 }

@@ -7,6 +7,6 @@ namespace DTGE.GameBoard.Interfaces.DataTypes
     /// </summary>
     public interface IBoardShape
     {
-        IEnumerable<IBoardPosition> Positions { get; set; }
+        IEnumerable<IBoardPosition> Positions { get; }
     }
 }

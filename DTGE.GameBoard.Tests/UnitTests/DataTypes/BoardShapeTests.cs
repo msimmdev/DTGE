@@ -11,14 +11,12 @@ namespace DTGE.GameBoard.Tests.UnitTests.DataTypes
         [Fact]
         public void Positions_GetAndSet_ShouldMatch()
         {
-            var sut = new BoardShape();
             var posList = new List<IBoardPosition>(){
                 new Mock<IBoardPosition>().Object,
                 new Mock<IBoardPosition>().Object,
                 new Mock<IBoardPosition>().Object
             };
-
-            sut.Positions = posList;
+            var sut = new BoardShape(posList);
 
             Assert.Equal(posList, sut.Positions);
         }
