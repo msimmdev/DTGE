@@ -99,8 +99,9 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
         {
             mockTile.SetupProperty(x => x.Position);
             mockBoard.SetupGet(x => x.Tiles).Returns(new Dictionary<Guid, IBoardTile>());
+            var mockEventHandler = new Mock<IEventHandler>();
 
-            sut.Execute();
+            sut.Execute(mockEventHandler.Object);
 
             Assert.Same(mockPosition.Object, sut.Tile.Position);
         }
@@ -110,8 +111,9 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
         {
             mockTile.SetupProperty(x => x.Board);
             mockBoard.SetupGet(x => x.Tiles).Returns(new Dictionary<Guid, IBoardTile>());
+            var mockEventHandler = new Mock<IEventHandler>();
 
-            sut.Execute();
+            sut.Execute(mockEventHandler.Object);
 
             Assert.Same(mockBoard.Object, sut.Tile.Board);
         }
@@ -147,7 +149,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
             mockTile.SetupGet(x => x.Id).Returns(tileGuid);
             mockBoard.SetupGet(x => x.Id).Returns(boardGuid);
 
-            var resolver = new Mock<IObjectResolver>();
+            var resolver = new Mock<IResolver>();
             resolver.Setup(x => x.Resolve<IBoardTile>(It.IsAny<Guid>())).Returns(mockTile.Object);
             resolver.Setup(x => x.Resolve<IBoard>(It.IsAny<Guid>())).Returns(mockBoard.Object);
             resolver.Setup(x => x.Create<IBoardPosition>(It.IsAny<BoardPositionDto>())).Returns(mockPosition2.Object);

@@ -52,7 +52,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
         [Fact]
         public void Validate_WithValidData_ShouldReturnSuccess()
         {
-            mockBoard.Setup(x => x.HasTile(It.IsAny<IBoardPosition>())).Returns(false);
+            mockBoard.Setup(x => x.HasTile(It.IsAny<IBoardPosition>())).Returns(true);
 
             var result = sut.Validate();
 
@@ -84,9 +84,9 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
         }
 
         [Fact]
-        public void Validate_WithOccpiedPosition_ShouldReturnError()
+        public void Validate_WithNoTile_ShouldReturnError()
         {
-            mockBoard.Setup(x => x.HasTile(It.IsAny<IBoardPosition>())).Returns(true);
+            mockBoard.Setup(x => x.HasTile(It.IsAny<IBoardPosition>())).Returns(false);
 
             var result = sut.Validate();
 
@@ -98,9 +98,11 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
         public void Execute_WithValidData_ShouldSetPosition()
         {
             mockObject.SetupProperty(x => x.Position);
+            mockBoard.Setup(x => x.HasTile(It.IsAny<IBoardPosition>())).Returns(true);
             mockBoard.SetupGet(x => x.Objects).Returns(new Dictionary<Guid, IBoardObject>());
+            var mockEventHandler = new Mock<IEventHandler>();
 
-            sut.Execute();
+            sut.Execute(mockEventHandler.Object);
 
             Assert.Same(mockPosition.Object, sut.Object.Position);
         }
@@ -110,8 +112,9 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
         {
             mockObject.SetupProperty(x => x.Board);
             mockBoard.SetupGet(x => x.Objects).Returns(new Dictionary<Guid, IBoardObject>());
+            var mockEventHandler = new Mock<IEventHandler>();
 
-            sut.Execute();
+            sut.Execute(mockEventHandler.Object);
 
             Assert.Same(mockBoard.Object, sut.Object.Board);
         }
@@ -147,7 +150,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
             mockObject.SetupGet(x => x.Id).Returns(objectGuid);
             mockBoard.SetupGet(x => x.Id).Returns(boardGuid);
 
-            var resolver = new Mock<IObjectResolver>();
+            var resolver = new Mock<IResolver>();
             resolver.Setup(x => x.Resolve<IBoardObject>(It.IsAny<Guid>())).Returns(mockObject.Object);
             resolver.Setup(x => x.Resolve<IBoard>(It.IsAny<Guid>())).Returns(mockBoard.Object);
             resolver.Setup(x => x.Create<IBoardPosition>(It.IsAny<BoardPositionDto>())).Returns(mockPosition2.Object);

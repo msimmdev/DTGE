@@ -8,6 +8,7 @@ using DTGE.GameBoard.Interfaces.GameActions;
 using DTGE.GameBoard.Interfaces.GameObjects;
 using DTGE.GameBoard.Interfaces.DataTypes;
 using DTGE.GameBoard.SerializationData;
+using DTGE.GameBoard.GameEvents;
 
 namespace DTGE.GameBoard.GameActions
 {
@@ -36,7 +37,7 @@ namespace DTGE.GameBoard.GameActions
             };
         }
 
-        public void UseDto(IGameDto data, IObjectResolver resolver)
+        public void UseDto(IGameDto data, IResolver resolver)
         {
             var objectData = data as PlaceObjectOnBoardActionDto;
             Id = new Guid(objectData.Id);
@@ -49,7 +50,7 @@ namespace DTGE.GameBoard.GameActions
         public ValidationResult Validate()
         {
             if (Object == null)
-                return ValidationResult.NewError("Tile is required for PlaceTileOnBoard action.");
+                return ValidationResult.NewError("Object is required for PlaceTileOnBoard action.");
 
             if (Board == null)
                 return ValidationResult.NewError("Board is required for PlaceTileOnBoard action.");
@@ -58,23 +59,39 @@ namespace DTGE.GameBoard.GameActions
                 return ValidationResult.NewError("Position is required for PlaceTileOnBoard action.");
 
             if (Object.Board != null)
-                return ValidationResult.NewError("Tile is already attached to a board.");
+                return ValidationResult.NewError("Object is already attached to a board.");
 
             if (Object.Position != null)
-                return ValidationResult.NewError("Tile is already has a position.");
+                return ValidationResult.NewError("Object already has a position.");
 
-            if (Board.HasTile(Position))
-                return ValidationResult.NewError("A Tile already exists at this position.");
+            if (!Board.HasTile(Position))
+                return ValidationResult.NewError("There is no tile at the requested position.");
 
 
             return ValidationResult.NewSuccess();
         }
 
-        protected override void PerformAction()
+        public void Execute(IEventHandler handler)
+        {
+            handler.Dispatch<ActionStartEvent<PlaceObjectOnBoardAction>>(
+                new ActionStartEvent<PlaceObjectOnBoardAction>(this));
+
+            PerformAction(handler);
+
+            handler.Dispatch<ActionEndEvent<PlaceObjectOnBoardAction>>(
+                new ActionEndEvent<PlaceObjectOnBoardAction>(this));
+        }
+
+        private void PerformAction(IEventHandler handler)
         {
             Object.Position = Position;
             Object.Board = Board;
             Board.Objects.Add(Object.Id, Object);
+
+            handler.Dispatch(new ObjectPlacedOnTileEvent(
+                Object,
+                Board.FindTile(Position)
+            ));
         }
     }
 }

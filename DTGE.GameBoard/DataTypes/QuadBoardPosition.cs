@@ -56,7 +56,7 @@ namespace DTGE.GameBoard.DataTypes
             };
         }
 
-        public void UseDto(IGameDto data, IObjectResolver resolver)
+        public void UseDto(IGameDto data, IResolver resolver)
         {
             var objectData = data as BoardPositionDto;
             var posList = objectData.Position.Split('x');

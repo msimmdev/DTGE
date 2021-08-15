@@ -80,8 +80,9 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
         public void Execute_WithValidData_ShouldChangeTilePosition()
         {
             mockTile.SetupProperty(x => x.Position);
+            var mockEventHandler = new Mock<IEventHandler>();
 
-            sut.Execute();
+            sut.Execute(mockEventHandler.Object);
 
             Assert.Same(mockPosition.Object, sut.Tile.Position);
         }
@@ -112,7 +113,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
 
             mockTile.SetupGet(x => x.Id).Returns(tileGuid);
 
-            var resolver = new Mock<IObjectResolver>();
+            var resolver = new Mock<IResolver>();
             resolver.Setup(x => x.Resolve<IBoardTile>(It.IsAny<Guid>())).Returns(mockTile.Object);
             resolver.Setup(x => x.Create<IBoardPosition>(It.IsAny<BoardPositionDto>())).Returns(mockPosition2.Object);
 

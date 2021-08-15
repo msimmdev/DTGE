@@ -20,7 +20,7 @@ namespace DTGE.Common.Core
             return new EmptySerializationData();
         }
 
-        public void UseDto(IGameDto data, IObjectResolver resolver)
+        public void UseDto(IGameDto data, IResolver resolver)
         {
         }
     }

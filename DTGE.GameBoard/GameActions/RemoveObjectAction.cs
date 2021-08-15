@@ -29,7 +29,7 @@ namespace DTGE.GameBoard.GameActions
             };
         }
 
-        public void UseDto(IGameDto data, IObjectResolver resolver)
+        public void UseDto(IGameDto data, IResolver resolver)
         {
             var objectData = data as RemoveObjectActionDto;
             Id = new Guid(objectData.Id);
@@ -48,7 +48,18 @@ namespace DTGE.GameBoard.GameActions
             return ValidationResult.NewSuccess();
         }
 
-        protected override void PerformAction()
+        public void Execute(IEventHandler handler)
+        {
+            handler.Dispatch<ActionStartEvent<RemoveObjectAction>>(
+                new ActionStartEvent<RemoveObjectAction>(this));
+
+            PerformAction();
+
+            handler.Dispatch<ActionEndEvent<RemoveObjectAction>>(
+                new ActionEndEvent<RemoveObjectAction>(this));
+        }
+
+        private void PerformAction()
         {
             Object.Board.Tiles.Remove(Object.Id);
             Object.Board = null;

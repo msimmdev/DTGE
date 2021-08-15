@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DTGE.Common.Interfaces
 {
-    public interface IObjectResolver
+    public interface IResolver
     {
         IIdentifiedObject Resolve(Guid id);
         T Resolve<T>(Guid id);

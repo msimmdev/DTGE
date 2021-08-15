@@ -56,8 +56,9 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
             mockBoard.SetupGet(x => x.Tiles).Returns(new Dictionary<Guid, IBoardTile>());
             mockObject.SetupProperty(x => x.Board);
             mockObject.Object.Board = mockBoard.Object;
+            var mockEventHandler = new Mock<IEventHandler>();
 
-            sut.Execute();
+            sut.Execute(mockEventHandler.Object);
 
             Assert.Null(sut.Object.Board);
         }
@@ -71,8 +72,9 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
             mockObject.SetupGet(x => x.Board).Returns(mockBoard.Object);
             mockObject.SetupProperty(x => x.Position);
             mockObject.Object.Position = mockPosition.Object;
+            var mockEventHandler = new Mock<IEventHandler>();
 
-            sut.Execute();
+            sut.Execute(mockEventHandler.Object);
 
             Assert.Null(sut.Object.Position);
         }
@@ -98,7 +100,7 @@ namespace DTGE.GameBoard.Tests.UnitTests.GameActions
 
             mockObject.SetupGet(x => x.Id).Returns(objectGuid);
 
-            var resolver = new Mock<IObjectResolver>();
+            var resolver = new Mock<IResolver>();
             resolver.Setup(x => x.Resolve<IBoardObject>(It.IsAny<Guid>())).Returns(mockObject.Object);
 
             var dto = new RemoveObjectActionDto()

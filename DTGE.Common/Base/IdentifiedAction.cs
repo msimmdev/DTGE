@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DTGE.Common.Core;
 using DTGE.Common.Interfaces;
 
 namespace DTGE.Common.Base
@@ -13,16 +14,8 @@ namespace DTGE.Common.Base
             Completed = false;
         }
 
-        public IdentifiedAction(Action preExecute, Action postExecute) : this()
-        {
-            PreExecute = preExecute;
-            PostExecute = postExecute;
-        }
-
         public Guid Id { get; set; }
         public ISet<string> Tags { get; set; }
-        public Action PreExecute { get; set; }
-        public Action PostExecute { get; set; }
         public bool Completed { get; protected set; }
 
         public override bool Equals(Object other)
@@ -45,21 +38,5 @@ namespace DTGE.Common.Base
         {
             return 2108858624 + Id.GetHashCode();
         }
-
-        public virtual void Execute(Action preExecute, Action postExecute)
-        {
-            if (preExecute != null)
-                preExecute();
-            PerformAction();
-            if (postExecute != null)
-                postExecute();
-        }
-
-        public virtual void Execute()
-        {
-            Execute(PreExecute, PostExecute);
-        }
-
-        protected abstract void PerformAction();
     }
 }

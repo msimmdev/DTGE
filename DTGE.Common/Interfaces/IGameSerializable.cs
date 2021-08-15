@@ -3,6 +3,6 @@
     public interface IGameSerializable
     {
         IGameDto GetDto();
-        void UseDto(IGameDto data, IObjectResolver resolver);
+        void UseDto(IGameDto data, IResolver resolver);
     }
 }

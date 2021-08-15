@@ -4,6 +4,7 @@ using System.Linq;
 using DTGE.Common.Base;
 using DTGE.Common.Core;
 using DTGE.Common.Interfaces;
+using DTGE.GameBoard.GameEvents;
 using DTGE.GameBoard.Interfaces.DataTypes;
 using DTGE.GameBoard.Interfaces.GameActions;
 using DTGE.GameBoard.Interfaces.GameObjects;
@@ -35,7 +36,7 @@ namespace DTGE.GameBoard.GameActions
             };
         }
 
-        public void UseDto(IGameDto data, IObjectResolver resolver)
+        public void UseDto(IGameDto data, IResolver resolver)
         {
             var objectData = data as MoveObjectActionDto;
             Id = new Guid(objectData.Id);
@@ -53,17 +54,33 @@ namespace DTGE.GameBoard.GameActions
                 return ValidationResult.NewError("NewPosition is required for PlaceTileOnBoard action.");
 
             if (Object.Board == null)
-                return ValidationResult.NewError("Tile is not attached to a board.");
+                return ValidationResult.NewError("Object is not attached to a board.");
 
-            if (Object.Board.HasTile(NewPosition))
-                return ValidationResult.NewError("A tile already exists at the given position.");
+            if (!Object.Board.HasTile(NewPosition))
+                return ValidationResult.NewError("There is no tile at requested position.");
 
             return ValidationResult.NewSuccess();
         }
 
-        protected override void PerformAction()
+        public void Execute(IEventHandler handler)
+        {
+            handler.Dispatch<ActionStartEvent<MoveObjectAction>>(
+                new ActionStartEvent<MoveObjectAction>(this));
+
+            PerformAction(handler);
+
+            handler.Dispatch<ActionEndEvent<MoveObjectAction>>(
+                new ActionEndEvent<MoveObjectAction>(this));
+        }
+
+        private void PerformAction(IEventHandler handler)
         {
             Object.Position = NewPosition;
+
+            handler.Dispatch(new ObjectMovesToTileEvent(
+                Object,
+                Object.Board.FindTile(NewPosition)
+            ));
         }
     }
 }

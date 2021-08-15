@@ -36,7 +36,7 @@ namespace DTGE.GameBoard.GameActions
             };
         }
 
-        public void UseDto(IGameDto data, IObjectResolver resolver)
+        public void UseDto(IGameDto data, IResolver resolver)
         {
             var objectData = data as PlaceTileOnBoardActionDto;
             Id = new Guid(objectData.Id);
@@ -70,7 +70,18 @@ namespace DTGE.GameBoard.GameActions
             return ValidationResult.NewSuccess();
         }
 
-        protected override void PerformAction()
+        public void Execute(IEventHandler handler)
+        {
+            handler.Dispatch<ActionStartEvent<PlaceTileOnBoardAction>>(
+                new ActionStartEvent<PlaceTileOnBoardAction>(this));
+
+            PerformAction();
+
+            handler.Dispatch<ActionEndEvent<PlaceTileOnBoardAction>>(
+                new ActionEndEvent<PlaceTileOnBoardAction>(this));
+        }
+
+        private void PerformAction()
         {
             Tile.Position = Position;
             Tile.Board = Board;

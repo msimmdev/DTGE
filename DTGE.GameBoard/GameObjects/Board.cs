@@ -40,7 +40,7 @@ namespace DTGE.GameBoard.GameObjects
             };
         }
 
-        public void UseDto(IGameDto data, IObjectResolver resolver)
+        public void UseDto(IGameDto data, IResolver resolver)
         {
             var dataObject = data as BoardDto;
             Id = new Guid(dataObject.Id);

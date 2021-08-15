@@ -8,12 +8,9 @@ namespace DTGE.Common.Interfaces
     {
         Guid Id { get; set; }
         ISet<string> Tags { get; set; }
-        Action PreExecute { get; set; }
-        Action PostExecute { get; set; }
         bool Completed { get; }
 
-        void Execute();
-        void Execute(Action preExecute, Action postExecute);
+        void Execute(IEventHandler handler);
         ValidationResult Validate();
     }
 }

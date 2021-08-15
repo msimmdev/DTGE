@@ -55,7 +55,7 @@ namespace DTGE.GameBoard.GameObjects
             };
         }
 
-        public void UseDto(IGameDto data, IObjectResolver resolver)
+        public void UseDto(IGameDto data, IResolver resolver)
         {
             var objectData = data as TileGraphDto;
             Id = new Guid(objectData.Id);
